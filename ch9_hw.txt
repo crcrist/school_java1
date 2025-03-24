@@ -1,0 +1,300 @@
+// Exercise 9.1 
+1. public class Test {
+    public static void main(String[] args) {
+        // String + char
+        String str = "Hello";
+        char ch = 'A';
+        System.out.println("String + char: " + str + ch);
+        System.out.println("Type of result: String");
+        
+        // char + char
+        char ch1 = 'A';  // ASCII value 65
+        char ch2 = 'B';  // ASCII value 66
+        System.out.println("char + char: " + (ch1 + ch2));
+        System.out.println("Type of result: int (performs numeric addition of ASCII values)");
+        
+        // int + char
+        int num = 10;
+        char letter = 'C';  // ASCII value 67
+        System.out.println("int + char: " + (num + letter));
+        System.out.println("Type of result: int");
+        
+        // double + int
+        double dbl = 5.5;
+        int integer = 3;
+        System.out.println("double + int: " + (dbl + integer));
+        System.out.println("Type of result: double");
+        
+        // boolean + String
+        boolean bool = true;
+        String text = " is the answer";
+        System.out.println("boolean + String: " + bool + text);
+        System.out.println("Type of result: String");
+        
+        // String + any primitive
+        String beginning = "Number: ";
+        int value = 42;
+        System.out.println("String + any primitive: " + beginning + value);
+        System.out.println("Type of result: String");
+        
+        // char + int + String
+        char grade = 'A';
+        int score = 95;
+        String message = " is excellent";
+        System.out.println("Complex expression: " + grade + score + message);
+        System.out.println("Type of result: String");
+        
+        // Adding parentheses changes evaluation order
+        System.out.println("With parentheses: " + grade + (score + message));
+        System.out.println("Type of result: String");
+    }
+}
+2. 
++ | boolean | char | int | double | String
+--|---------|------|-----|--------|--------
+boolean | Illegal | Illegal | Illegal | Illegal | Legal, concatenation, String
+char | Illegal | Legal, addition, int | Legal, addition, int | Legal, addition, double | Legal, concatenation, String
+int | Illegal | Legal, addition, int | Legal, addition, int | Legal, addition, double | Legal, concatenation, String
+double | Illegal | Legal, addition, double | Legal, addition, double | Legal, addition, double | Legal, concatenation, String
+String | Legal, concatenation, String | Legal, concatenation, String | Legal, concatenation, String | Legal, concatenation, String | Legal, concatenation, String
+
+3. unavoidable entries are numeric types adding together such as int + int, which follow mathematical conventions. String concatenation seems like a deliberate design choice, to make string handling more convenient. Boolean values not being able to participate in addition with numeric types makes sense since booleans aren't numbers. The most problematic entry might be char + char which results in int, which can be surprising. 
+
+4. the error is "incompatible types: possible lossy conversion  from into to char". What's happening is when using x++ with char, the conversion is automatically handled, but with x = x+1, the right side is converted to an int, and this won't be converted back to a char because data could be lost. 
+
+5. in all cases, the empty string forces string concatenation which converts the other value to string. The result is always a string containing the string representation of that value. This is a technique used to convert any type to a string.
+
+// Exercise 9.2 
+1. and 2.
+public class Big {
+    public static long factorial(int n) {
+        long result = 1;
+        for (int i = 1; i <= n; i++) {
+            result *= i;
+        }
+        return result;
+    }
+    
+    public static void main(String[] args) {
+        System.out.println("n\tfactorial(n)");
+        System.out.println("-----------------");
+        
+        for (int i = 0; i <= 30; i++) {
+            System.out.println(i + "\t" + factorial(i));
+        }
+    }
+}
+
+the numbers are looking incorrect because the size of the result is exceeding what the long type can handle.
+
+3. 
+import java.math.BigInteger;
+
+public class Big {
+    public static BigInteger factorial(int n) {
+        BigInteger result = BigInteger.ONE;
+        for (int i = 1; i <= n; i++) {
+            result = result.multiply(BigInteger.valueOf(i));
+        }
+        return result;
+    } 
+    
+    public static void main(String[] args) {
+        System.out.println("n\tfactorial(n)");
+        System.out.println("-----------------");
+        
+        for (int i = 0; i <= 30; i++) {
+            System.out.println(i + "\t" + factorial(i));
+        }
+    }
+}
+
+// numbers are now represented accurately 
+
+4. I was able to calculate to factorial 100000 successfully, i could potentailly go higher still
+
+// Exercise 9.3
+
+    public static BigInteger pow(int x, int n) {
+      if (n == 0) return BigInteger.ONE;
+      // find x to the n/2 recursively
+      BigInteger t = pow(x, n / 2);
+      // if n is even, the result is t squared
+      // if n is odd, the result is t squared times x
+      if (n % 2 == 0) {
+        return t.multiply(t);
+      } else {
+        return t.multiply(t).multiply(BigInteger.valueOf(x));
+      }
+    }
+
+// Exercise 9.4
+
+1. 
+    public static double myexp(double x, int n) {
+        double sum = 0.0;
+        for (int i = 0; i < n; i++) {
+            sum += Math.pow(x, i) / factorial(i);
+        }
+        return sum;
+    }
+2.
+    public static double myexpEfficient(double x, int n) {
+        double sum = 0.0;
+        double term = 1.0;  // First term is 1
+        
+        for (int i = 0; i < n; i++) {
+            sum += term;
+            term = term * x / (i + 1);  // Calculate next term based on current term
+        }
+        
+        return sum;
+    }
+
+3.
+    public static void check(double x, int n) {
+        System.out.println(x + "\t" + myexpEfficient(x, n) + "\t" + Math.exp(x));
+    }
+
+4.
+        System.out.println("Testing different numbers of terms for x = 1.0:");
+        for (int n = 1; n <= 20; n++) {
+            System.out.println("Terms: " + n + "\t" + myexpEfficient(1.0, n) + "\t" + Math.exp(1.0));
+        }
+5. 
+        System.out.println("\nTesting with positive values:");
+        check(0.1, 20);
+        check(1.0, 20);
+        check(10.0, 100);
+        check(100.0, 1000);
+
+6.
+        System.out.println("\nTesting with negative values:");
+        check(-0.1, 20);
+        check(-1.0, 20);
+        check(-10.0, 100);
+        check(-100.0, 1000);
+
+// Exercise 9.5 
+1. 
+public static double[] powArray(double[] a, int power) {
+        // Create a new array of the same length
+        double[] result = new double[a.length];
+        
+        // Raise each element to the specified power
+        for (int i = 0; i < a.length; i++) {
+            result[i] = Math.pow(a[i], power);
+        }
+        
+        return result;
+    }
+2.
+public static int[] histogram(int[] scores, int numCounters) {
+        // Create a new array of counters
+        int[] counts = new int[numCounters];
+        
+        // Count occurrences of each score
+        for (int score : scores) {
+            // Make sure the score is in valid range
+            if (score >= 0 && score < numCounters) {
+                counts[score]++;
+            } else {
+                System.out.println("Warning: Score " + score + " is out of range.");
+            }
+        }
+        
+        return counts;
+    }
+
+// Exercise 9.6
+
+1. 
+public static int checkParentheses(String s) {
+    int count = 0;
+    for (int i = 0; i < s.length(); i++) {
+        char c = s.charAt(i);
+        if (c == '(') {
+            count++;
+        } else if (c == ')') {
+            count--;
+        }
+    }
+    return count;
+}
+
+2. 
+public class ParenthesesChecker {
+
+/**
+ * Counts the balance of parentheses in a string.
+ * Returns 0 if balanced, positive if more opening, negative if more closing.
+ */
+public static int checkParentheses(String s) {
+    int count = 0;
+    for (int i = 0; i < s.length(); i++) {
+        char c = s.charAt(i);
+        if (c == '(') {
+            count++;
+        } else if (c == ')') {
+            count--;
+        }
+    }
+    return count;
+}
+
+/**
+ * Checks multiple types of brackets: (), [], and {}.
+ */
+public static boolean checkAllBrackets(String s) {
+    int parentheses = 0;
+    int squareBrackets = 0;
+    int curlyBraces = 0;
+    
+    for (int i = 0; i < s.length(); i++) {
+        char c = s.charAt(i);
+        
+        if (c == '(') {
+            parentheses++;
+        } else if (c == ')') {
+            parentheses--;
+        } else if (c == '[') {
+            squareBrackets++;
+        } else if (c == ']') {
+            squareBrackets--;
+        } else if (c == '{') {
+            curlyBraces++;
+        } else if (c == '}') {
+            curlyBraces--;
+        }
+    }
+    
+    // Check if all counters are zero (balanced)
+    if (parentheses == 0 && squareBrackets == 0 && curlyBraces == 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+public static void main(String[] args) {
+    // Test strings
+    String test1 = "((3 + 7) * 2)";
+    String test2 = "((3 + 7) * 2";
+    String test3 = ")(3 + 7) * 2)";
+    String test4 = "(3 + 7) * 2))";
+    
+    // Test the first method
+    System.out.println("Testing checkParentheses:");
+    System.out.println(test1 + " -> " + checkParentheses(test1));
+    System.out.println(test2 + " -> " + checkParentheses(test2));
+    System.out.println(test3 + " -> " + checkParentheses(test3));
+    System.out.println(test4 + " -> " + checkParentheses(test4));
+    
+    // Test the second method with more bracket types
+    System.out.println("\nTesting checkAllBrackets:");
+    System.out.println("(a + [b * {c - d}]) -> " + 
+                      checkAllBrackets("(a + [b * {c - d}])"));
+    System.out.println("(a + [b * {c - d]) -> " + 
+                      checkAllBrackets("(a + [b * {c - d])"));
+  }
+}

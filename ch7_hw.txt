@@ -1,0 +1,178 @@
+// Exercise 7.1
+// this method calculates the product of all elements in the array a[]
+public static int banana(int[] a) {
+  int kiwi = 1;
+  int i = 0;
+  while (i < a.length) {
+    kiwi = kiwi * a[i];
+    i++;
+  }
+  return kiwi;
+}
+
+// this method finds the position at which the int grape is located, if it is not found returns -1
+public static int grapefruit(int[] a, int grape) {
+  for (int i = 0; i < a.length; i++) {
+    if (a[i] == grape) {
+      return i;
+    }
+  }
+  return -1;
+}
+
+// this method is counting the occurrences of int apple in the array a[], after each occurences of int apple pear is incremented
+public static int pineapple(int[] a, int apple) {
+  int pear = 0;
+  for (int pine: a) {
+    if (pine == apple) {
+      pear++;
+    }
+  }
+  return pear;
+}
+
+// Exercise 7.2
+// the first line returns an array of 1,2,3,4,5. when dub(bob) is called the array is changed to 2,4,6,8,10. the last line is summing all of the values in that array, returning 30.
+// Stack Diagram Below: 
++------------------+
+| main()           |
+|  bob → [2,4,6,8,10] |
++------------------+
+       |
+       V
++------------------+
+| mus(zoo)         |
+|  zoo → [2,4,6,8,10] |
+|  fus = 30        |
+|  i = 5           |
++------------------+
+
+public static int[] make(int n) {
+  int[] a = new int[n];
+  for (int i = 0; i < n; i++) {
+    a[i] = i + 1;
+  }
+  return a;
+}
+
+public static void dub(int[] jub) {
+  for (int i = 0; i < jub.length; i++) {
+    jub[i] *= 2;
+  }
+} 
+
+public static int mus(int[] zoo) {
+  int fus = 0;
+  for (int i = 0; i < zoo.length; i++) {
+    fus += zoo[i];
+  }
+  return fus;
+}
+
+public static void main(String[] args) {
+  int[] bob = make(5);
+  dub(bob);
+  System.out.println(mus(bob));
+}
+
+// Exercise 7.3
+// a foreach loop would not work because we need to keep track of the index of the max value, not just the value itself
+  public static int indexOfMax(int[] array) {
+    int maxIndex = 0;
+    for (int i = 1; i < array.length; i++) {
+        if (array[i] > array[maxIndex]) {
+          maxIndex = i; 
+      }
+    }
+    return maxIndex;
+  }
+
+// Exercise 7.4
+  public static boolean[] sieve(int n) {
+    // Create array of size n
+    boolean[] isPrime = new boolean[n];
+    
+    // Initialize all values to true
+    for (int i = 0; i < n; i++) {
+        isPrime[i] = true;
+    }
+    
+    // 0 and 1 are not prime
+    isPrime[0] = false;
+    isPrime[1] = false;
+    
+    // Apply the Sieve of Eratosthenes algorithm
+    for (int p = 2; p*p < n; p++) {
+        // If p is prime, mark all its multiples as non-prime
+        if (isPrime[p] == true) {
+            // Start from p*p and mark all multiples of p as false
+            for (int multiple = p*p; multiple < n; multiple += p) {
+                isPrime[multiple] = false;
+            }
+        }
+    }
+    
+    return isPrime;
+  }
+
+// Exercise 7.5
+  public static boolean areFactors(int n, int[] array) {
+    boolean factor = true;
+    
+    for (int value : array) {
+        if (n % value != 0)   {
+          factor = false;
+      }
+    }
+    return factor;    
+  }
+
+// Exercise 7.6
+  public static boolean arePrimeFactors(int n, int[] array) {
+    
+    int product = 1;
+   
+    for (int value : array) {
+      if (value <= 1) {
+          return false;
+      }
+
+      if (value == 2){
+      } else {
+
+      for (int i = 2; i <= Math.sqrt(value); i++) {
+          if (value % i == 0) {
+            return false;
+          }
+        }
+      }
+
+        product *= value;
+    
+    }
+
+    return product == n;    
+  }
+
+// Exercise 7.7
+  public static int[] letterHist(String s) {
+    int[] counts = new int[26];
+    String lower = s.toLowerCase();
+    
+    for (char letter : lower.toCharArray()) {
+      if (letter >= 'a' && letter <= 'z') {
+        int index = letter - 'a';
+        counts[index]++;
+      }
+    }
+    return counts;    
+  }
+
+// Exercise 7.8
+// can just reuse the method we created above
+public static boolean stringAnnogram(String s1, String s2) {
+    int[] counts1 = letterHist(s1);
+    int[] counts2 = letterHist(s2);
+    return Arrays.equals(counts1, counts2);
+}
+

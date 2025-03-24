@@ -1,0 +1,274 @@
+// Exercise 5.1
+ 
+ if (x > 0 && x < 10) {
+        System.out.println("positive single digit number.");
+
+// Exercise 5.2
+
+import java.util.Scanner;
+import java.util.Random;
+
+
+public class Conditions {
+   public static void main(String[] args) {
+
+    Random random = new Random();
+    Scanner in = new Scanner(System.in);
+    
+    System.out.print("I'm thinking of a number between 1 and 100 (including both). Can you guess what it is?\n");
+    System.out.print("Type a number: ");
+    int guessed_number = in.nextInt();
+    System.out.printf("Your guess is: %d\n", guessed_number);
+      
+    int number = random.nextInt(100) + 1;
+
+    int guessed_number2 = 0;
+    int difference2 = 0;
+    int guessed_number3 = 0;
+    int difference3 = 0;
+  
+    int difference = guessed_number - number;
+    // first time guess is evaluated 
+    if (difference > 0) { 
+          System.out.println("Guess is too high! Try guessing a smaller number");
+          guessed_number2 = in.nextInt();
+          System.out.printf("Your guess is: %d\n", guessed_number2);
+          difference2 = guessed_number2 - number;
+      } else if (difference < 0) {
+          System.out.println("Guess is too low! Try guessing a larger number");
+          guessed_number2 = in.nextInt();
+          System.out.printf("Your guess is: %d\n", guessed_number2); 
+          difference2 = guessed_number2 - number;
+    } else {
+          System.out.println("Your guess was correct, that is the number!");
+          return;
+      }
+
+    if (difference2 > 0) { 
+          System.out.println("Guess is too high! Try guessing a smaller number");
+          guessed_number3 = in.nextInt();
+          System.out.printf("Your guess is: %d\n", guessed_number3);
+          difference3 = guessed_number3 - number;
+      } else if (difference2 < 0) {
+          System.out.println("Guess is too low! Try guessing a larger number");
+          guessed_number3 = in.nextInt();
+          System.out.printf("Your guess is: %d\n", guessed_number3); 
+          difference3 = guessed_number3 - number;
+    } else {
+          System.out.println("Your guess was correct, that is the number!");
+          return;
+      }
+
+    if (difference3 > 0) {
+          System.out.println("Guess is too high! Good try!");
+          System.out.printf("You were off by: %d\n", difference3);
+          System.out.printf("The number I was thinking of is: %d\n", number);
+
+    } else if (difference3 < 0) {
+          System.out.println("Guess is too low! Good try!");
+          System.out.printf("You were off by: %d\n", Math.abs(difference3));
+          System.out.printf("The number I was thinking of is: %d\n", number);
+
+    } else {
+          System.out.println("Your guess was correct, that is the number!");
+          return;
+
+    }
+
+  }
+}
+
+// Exercise 5.3
+
+
+import java.util.Scanner;
+
+
+public class Fermat {
+   public static void main(String[] args) {
+
+      Scanner in = new Scanner(System.in);
+      
+
+      System.out.print("enter value a for Fermats formula: ");
+      double a = in.nextDouble();
+
+      System.out.print("enter value b for Fermats formula: ");
+      double b = in.nextDouble();
+
+      System.out.print("enter value c for Fermats formula: ");
+      double c = in.nextDouble();
+
+      System.out.print("enter value n for Fermats formula: ");
+      double n = in.nextDouble();
+
+      double a_sq = Math.pow(a,n);
+      double b_sq = Math.pow(b,n);
+      double c_sq = Math.pow(c,n);
+
+      if ((a_sq + b_sq == c_sq) && n > 2) {
+          System.out.println("Holy smokes, Fermat was wrong!");
+      } else {
+          System.out.println("No, that doesn't work");
+      }
+
+   }    
+}
+
+
+// Exercise 5.4
+
+      // System.out.println(yes == no || grade > amount);  
+      True
+      
+      // System.out.println(amount == 40.0 || 50.0); 
+      Error, right side needs to be bool
+
+      // System.out.println(hiVal != loVal || loVal < 0); 
+      True
+      
+      // System.out.println(true || hello.length() > 0); 
+      True needs to be lowercase (true) 
+      
+      // System.out.println(hello.isEmpty() && yes); 
+      False
+      
+      // System.out.println(grade <= 100 && !false); 
+      True
+      
+      // System.out.println(!yes || no); 
+      False
+      
+      // System.out.println(grade > 75 > amount); 
+      Error, need to have an and cannot chain operators
+      
+      // System.out.println(amount <= hiVal && amount >= loVal); 
+      True
+  
+      // System.out.println(no && !no || yes && !yes); 
+      False
+
+// Exercise 5.5
+
+  true
+  true
+  ping!
+  pong!
+
+// Exercise 5.6
+
+import java.util.Scanner;
+
+
+public class Quadratic {
+   public static void main(String[] args) {
+      Scanner in = new Scanner(System.in);
+
+
+      System.out.print("enter value a for Quadratic formula: ");
+      if (!in.hasNextDouble()) {
+        String word = in.next();
+        System.err.println(word + " is not a number");
+        return;
+    }
+      double a = in.nextDouble();
+      if (a == 0) {
+        System.err.println("a cannot be 0");
+        return;
+    }
+      
+
+      System.out.print("enter value b for Quadratic formula: ");
+      if (!in.hasNextDouble()) {
+        String word = in.next();
+        System.err.println(word + "is not a number");
+        return;
+    }
+      double b = in.nextDouble();
+
+      System.out.print("enter value c for Quadratic formula: ");
+      if (!in.hasNextDouble()) {
+      String word = in.next();
+      System.err.println(word + " is not a number");
+      return;
+    }
+      double c = in.nextDouble();
+
+      double numerator_sqr = Math.pow(b,2) - 4 * a * c;
+
+      if (numerator_sqr > 0) {
+        double x1 = (-b + Math.sqrt(numerator_sqr)) / (2 * a);
+        double x2 = (-b - Math.sqrt(numerator_sqr)) / (2 * a);
+        System.out.println("two solutions:");
+        System.out.printf("x1 = %.2f\n", x1);
+        System.out.printf("x2 = %.2f\n", x2);
+    }
+    else if (numerator_sqr == 0) {
+        double x = -b / (2.0 * a);
+        System.out.println("One solutions:");
+        System.out.printf("x = %.2f\n", x);
+    }
+    else {
+        System.out.println("No real solutions exist");
+    }
+
+  }    
+}
+
+// Exercise 5.7
+
+import java.util.Scanner;
+
+
+public class Triangle {
+   public static void main(String[] args) {
+      Scanner in = new Scanner(System.in);
+
+
+      System.out.print("enter length of side a for the triangle ");
+      if (!in.hasNextDouble()) {
+        String word = in.next();
+        System.err.println(word + " is not a number");
+        return;
+    }
+      double a = in.nextDouble();
+      if (a <= 0) {
+        System.err.println("a cannot be 0");
+        return;
+    }
+
+
+      System.out.print("enter length of side b for the triangle ");
+      if (!in.hasNextDouble()) {
+        String word = in.next();
+        System.err.println(word + "is not a number");
+        return;
+    }
+      double b = in.nextDouble();
+      if (b <= 0) {
+        System.err.println("b cannot be 0");
+        return;
+    }
+
+      System.out.print("enter length of side c for the triangle ");
+      if (!in.hasNextDouble()) {
+      String word = in.next();
+      System.err.println(word + " is not a number");
+      return;
+    }
+      double c = in.nextDouble();
+      if (c <= 0) {
+        System.err.println("c cannot be 0");
+        return;
+    }
+
+    if ( a + b <= c || b + c <= a || a + c <= b) {
+      System.out.println("cannot make triangle");
+    }
+    else {
+      System.out.println("can make a triangle");
+    }
+
+
+  }    
+}

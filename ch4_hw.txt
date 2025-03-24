@@ -1,0 +1,120 @@
+// Exercise 4.1
+
+public class Date {
+  public static void printAmerican(String day, int date, int year, String month) {
+    System.out.println(day + ", " + month + date + ", " + year);
+  }
+
+  public static void printEuropean(String day, int date, int year, String month) {
+    System.out.println(day + " " + date + " " + month + year);
+  }
+
+   public static void main(String[] args) {
+    String day = "Sunday";
+    int date = 2;
+    String month = "February ";
+    int year = 2025;
+
+    printAmerican(day, date, year, month);
+    printEuropean(day, date, year, month);
+
+   }    
+}
+
+// Exercise 4.2
+
+public static void main(String[] args) {
+    zippo("rattle", 13);           // 1
+}
+
+public static void baffle(String blimp) {
+    System.out.println(blimp);     // 4
+    zippo("ping", -5);             // 5
+}
+
+public static void zippo(String quince, int flag) {
+    if (flag < 0) {                // 2, 6
+        System.out.println(quince + " zoop");  // 7
+    } else {                       // 3
+        System.out.println("ik");   // 3
+        baffle(quince);            // 4
+        System.out.println("boo-wa-ha-ha");  // 8
+    }
+}
+
+3. When baffle gets invoked, the value of parameter blimp is "rattle" (because baffle is called with quince, which at that point contains "rattle")
+
+4. program output is: 
+ik
+rattle
+ping zoop
+boo-wa-ha-ha
+
+// Exercise 4.3
+
+1. diagram: there are no values to track
+ping      |            |
+-----------------------
+baffle    |            |
+-----------------------
+zoop      |            |
+-----------------------
+main      |            |
+-----------------------
+2. Output would be:
+No, I wug.
+You wugga wug.
+I wug.
+
+// Exercice 4.4 
+
+1. error: invalid method declaration; return type required
+2. error: not a statement, this is because the void means nothing is returned, so you cannot add a number to something that doesnt exist
+
+// Exercise 4.5
+
+1. stack diagram: 
+zoop     | fred: "breakfast "  | bob: 4 |
+----------------------------------------
+clink    | fork: 4            |
+----------------------------------------
+main     | bizz: 5   | buzz: 2 |
+----------------------------------------
+
+2. final output is:
+just for
+any not more 
+It's breakfast 
+!
+
+// Exercise 4.6
+public class Multadd {
+
+  public static double multadd(double a, double b, double c) {
+    return a * b + c;
+  }
+
+  public static double expSum(double x) {
+    
+    double exp = Math.exp(-x);
+    return multadd(x, exp, Math.sqrt(1 - exp));
+  }
+
+   public static void main(String[] args) { 
+
+      System.out.println("Testing basic multadd:");
+      System.out.println("1.0 * 2.0 + 3.0 = " + multadd(1.0, 2.0, 3.0));
+      
+      // Compute sin(pi/4) + cos(pi/4)/2
+      double pi4 = Math.PI / 4;
+      double result1 = multadd(1.0, Math.sin(pi4), Math.cos(pi4) / 2);
+      System.out.println("\nsin(pi/4) + cos(pi/4)/2 = " + result1);
+      
+      // Compute log(10) + log(20)
+      double result2 = multadd(1.0, Math.log(10), Math.log(20));
+      System.out.println("\nlog(10) + log(20) = " + result2);
+
+      System.out.println("\nx*e^(-x) + sqrt(1 - e^(-x)) = " + expSum(1.0));
+
+    }    
+}
