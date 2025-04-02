@@ -1,0 +1,25 @@
+// Exercise 10.1
+1.
+
++---------------------------+
+| main                      |
+|  x = 5                    |
+|  blank --> [Point(1, 2)]  |
++---------------------------+
+| riddle                    |
+|  x = 12 (5+7)             |
+|  p --> [Point(1, 2)]      |
++---------------------------+
+
+2.
+
+15
+5
+1
+2
+
+3.
+
+it is mutable because it is an instance of the Point class, which we learned in this chapter is mutable. Because it is an object it is mutable, you can also change the state through methods and direct access to fields. If the riddle method modified p.x or p.y, those changes would be seen in the original blank object in main.
+
+
