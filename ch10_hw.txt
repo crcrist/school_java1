@@ -1,6 +1,6 @@
 // Exercise 10.1
-1.
 
+1.
 +---------------------------+
 | main                      |
 |  x = 5                    |
@@ -22,4 +22,54 @@
 
 it is mutable because it is an instance of the Point class, which we learned in this chapter is mutable. Because it is an object it is mutable, you can also change the state through methods and direct access to fields. If the riddle method modified p.x or p.y, those changes would be seen in the original blank object in main.
 
+// Exercise 10.2
+
+1.
+
++-------------------------------------+
+| main                                |
+|                                     |
+|  blank --> [Point(5, 8)]            |
+|  rect  --> [Rectangle(0, 2, 4, 4)]  |
++-------------------------------------+
+| findCenter                          |
+|                                     |
+|  rect   --> [Rectangle(0, 2, 4, 4)] |
+|  center --> [Point(2, 4)]           |
++-------------------------------------+
+2.
+
++-------------------------------------+
+| main                                |
+|                                     |
+|  blank  --> [Point(5, 8)]           |
+|  rect   --> [Rectangle(0, 2, 4, 4)] |
+|  center --> [Point(2, 4)]           |
++-------------------------------------+
+| distance                            |
+|                                     |
+|  p1 --> [Point(2, 4)]               |
+|  p2 --> [Point(5, 8)]               |
+|  dx = 3                             |
+|  dy = 4                             |
++-------------------------------------+
+3. the return value is 5.0
+
+// Exercise 10.3
+
+1. 
++-------------------------------------+
+| main                                |
+|                                     |
+|  box1 --> [Rectangle(1, 3, 9, 11)]  |
+|  p1   --> [Point(5.5, 8.5)]         |
+|  p2   --> [Point(5.5, 8.5)]         |
++-------------------------------------+
+
+2. 
+(5.5, 8.5)
+(5.5, 8.5)
+
+3.
+No, p1 and p2 are not aliased. This is because findCenter() method creates and returns a new Point object each time it is called, so p1 and p2 reference seperate objects with identical values. 
 
