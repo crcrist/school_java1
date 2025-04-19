@@ -75,7 +75,81 @@ public class pokerCards {
         }
       return deck;
     }
-      
+
+      public static int[] suitHist(pokerCards[] hand) {
+          // Create an array to hold the count of each suit
+          int[] hist = new int[4]; // 4 suits: Clubs, Diamonds, Hearts, Spades
+          
+          // Loop through the hand once
+          for (int i = 0; i < hand.length; i++) {
+              int suit = hand[i].getSuit();
+
+              hist[suit]++;  
+              // What should you do for each card?
+              // Hint: You need to get the suit and increment the corresponding counter
+              
+              // Your code here...
+          }
+          
+          return hist;
+      }
+
+      public static boolean hasFlush(pokerCards[] hand) {
+          int[] suitHistogram = suitHist(hand);      
+
+          for (int count : suitHistogram) {
+                if (count >= 5) {
+                  return true;    
+                }
+            }
+
+          return false;
+      }
+
+
+      public static boolean hasRoyal(pokerCards[] hand) {
+          // get histogram to determine which suit has the flush
+          int[] suitHist = suitHist(hand);
+          int flushSuit = -1;
+          
+          // determine which suit has a flush
+          for (int i = 0; i < suitHist.length; i++) {
+              if (suitHist[i] >= 5) {
+                  flushSuit = i;
+                  break;
+
+              }
+          }
+
+
+          // check for the specific royal cards (10, j, q, k, a) in the flush suit
+          boolean has10 = false;
+          boolean hasJ = false;
+          boolean hasQ = false;
+          boolean hasK = false;
+          boolean hasA = false;
+        
+          // check each card in the hand
+          for (int i = 0; i < hand.length; i++) {
+              // only consider cards of the flush suit
+              if (hand[i].getSuit() == flushSuit) {
+                  int rank = hand[i].getRank();
+
+                  // check for each required card
+                  if (rank == 10) has10 = true;
+                  if (rank == 11) hasJ = true;
+                  if (rank == 12) hasQ = true;
+                  if (rank == 13) hasK = true;
+                  if (rank == 1) hasA = true;
+              }
+          }
+          
+          // return true only if all five royal cards are present in the flush suit
+          return has10 && hasJ && hasQ && hasK && hasA;
+
+    }
+
+
     // Main method with your original code plus test for increment()
     public static void main(String[] args) {
 
@@ -85,6 +159,39 @@ public class pokerCards {
         for (pokerCards card: pokerCards1) {
             System.out.println(card);
         }
+    
+        // Test the suitHist method
+        // First, create a hand of cards (for example, 5 random cards)
+        pokerCards[] hand = new pokerCards[5];
+        hand[0] = new pokerCards(1, 0);  // Ace of Clubs
+        hand[1] = new pokerCards(10, 0); // 10 of Clubs
+        hand[2] = new pokerCards(12, 2); // Queen of Hearts
+        hand[3] = new pokerCards(5, 3);  // 5 of Spades
+        hand[4] = new pokerCards(7, 0);  // 7 of Clubs
+        
+        pokerCards[] hand2 = new pokerCards[5];
+        hand2[0] = new pokerCards(10, 0);  // Ace of Clubs
+        hand2[1] = new pokerCards(11, 0); // 10 of Clubs
+        hand2[2] = new pokerCards(12, 0); // Queen of Hearts
+        hand2[3] = new pokerCards(13, 0);  // 5 of Spades
+        hand2[4] = new pokerCards(1, 0);  // 7 of Clubs
+
+
+        
+        // Call the suitHist method
+        int[] suitHistogram = suitHist(hand);
+        
+        // Display the results
+        System.out.println("\nSuit histogram for hand:");
+        for (int i = 0; i < suitHistogram.length; i++) {
+            System.out.println(SUITS[i] + ": " + suitHistogram[i]);
+        }
+        
+        boolean flush = hasFlush(hand);
+        System.out.println("is there a flush?\n" + flush);
+
+        boolean royalFlush = hasRoyal(hand2);
+        System.out.println("is there a royal flush?\n" + royalFlush); 
         
     }
 }
