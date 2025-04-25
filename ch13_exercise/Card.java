@@ -1,18 +1,18 @@
-public class pokerCards {
+public class Card {
   
   // Instance variables
     private final int rank; // 2, 3, 4, 5, 6, 7, 8, 9, 10, j, q, k, ace
     private final int suit; // spades, jacks, clubs, diamonds
 
   public static final String[] RANKS = {
-      null, "Ace", "2", "3", "4", "5", "6", "7",
+     null, "Ace", "2", "3", "4", "5", "6", "7",
       "8", "9", "10", "Jack", "Queen", "King"};
 
     public static final String[] SUITS = {
       "Clubs", "Diamonds", "Hearts", "Spades"};
     
     // Constructor with parameters
-    public pokerCards(int rank, int suit) {
+    public Card(int rank, int suit) {
         this.rank = rank;
         this.suit = suit;
     }
@@ -26,9 +26,9 @@ public class pokerCards {
     }
 
     // print tile method
-    public static void printTile(pokerCards pokerCards) {
-        System.out.print(pokerCards.rank);
-        System.out.print(pokerCards.suit);
+    public static void printTile(Card Card) {
+        System.out.print(Card.rank);
+        System.out.print(Card.suit);
     }
     
     // Method to display time in a readable format
@@ -36,12 +36,12 @@ public class pokerCards {
       return RANKS[this.rank] + " of " + SUITS[this.suit];
     }
 
-    public boolean equals(pokerCards that) {
+    public boolean equals(Card that) {
         return this.rank == that.rank
             && this.suit == that.suit;
     }
 
-    public int compareTo(pokerCards that) {
+    public int compareTo(Card that) {
        
         if (this.suit < that.suit) {
             return -1;
@@ -64,19 +64,19 @@ public class pokerCards {
         return 0;
     }
 
-    public static pokerCards[] makeDeck() {
-      pokerCards[] deck = new pokerCards[52];
+    public static Card[] makeDeck() {
+      Card[] deck = new Card[52];
       int index = 0;
       for (int suit = 0; suit <= 3; suit++) {
           for (int rank = 1; rank <= 13; rank++) {
-              deck[index] = new pokerCards(rank, suit);
+              deck[index] = new Card(rank, suit);
               index++;
             }
         }
       return deck;
     }
 
-      public static int[] suitHist(pokerCards[] hand) {
+      public static int[] suitHist(Card[] hand) {
           // Create an array to hold the count of each suit
           int[] hist = new int[4]; // 4 suits: Clubs, Diamonds, Hearts, Spades
           
@@ -94,7 +94,7 @@ public class pokerCards {
           return hist;
       }
 
-      public static boolean hasFlush(pokerCards[] hand) {
+      public static boolean hasFlush(Card[] hand) {
           int[] suitHistogram = suitHist(hand);      
 
           for (int count : suitHistogram) {
@@ -107,7 +107,7 @@ public class pokerCards {
       }
 
 
-      public static boolean hasRoyal(pokerCards[] hand) {
+      public static boolean hasRoyal(Card[] hand) {
           // get histogram to determine which suit has the flush
           int[] suitHist = suitHist(hand);
           int flushSuit = -1;
@@ -153,28 +153,28 @@ public class pokerCards {
     // Main method with your original code plus test for increment()
     public static void main(String[] args) {
 
-        pokerCards[] pokerCards = new pokerCards[52];
-        pokerCards[] pokerCards1 = makeDeck();
+        Card[] Card = new Card[52];
+        Card[] Card1 = makeDeck();
 
-        for (pokerCards card: pokerCards1) {
+        for (Card card: Card1) {
             System.out.println(card);
         }
     
         // Test the suitHist method
         // First, create a hand of cards (for example, 5 random cards)
-        pokerCards[] hand = new pokerCards[5];
-        hand[0] = new pokerCards(1, 0);  // Ace of Clubs
-        hand[1] = new pokerCards(10, 0); // 10 of Clubs
-        hand[2] = new pokerCards(12, 2); // Queen of Hearts
-        hand[3] = new pokerCards(5, 3);  // 5 of Spades
-        hand[4] = new pokerCards(7, 0);  // 7 of Clubs
+        Card[] hand = new Card[5];
+        hand[0] = new Card(1, 0);  // Ace of Clubs
+        hand[1] = new Card(10, 0); // 10 of Clubs
+        hand[2] = new Card(12, 2); // Queen of Hearts
+        hand[3] = new Card(5, 3);  // 5 of Spades
+        hand[4] = new Card(7, 0);  // 7 of Clubs
         
-        pokerCards[] hand2 = new pokerCards[5];
-        hand2[0] = new pokerCards(10, 0);  // Ace of Clubs
-        hand2[1] = new pokerCards(11, 0); // 10 of Clubs
-        hand2[2] = new pokerCards(12, 0); // Queen of Hearts
-        hand2[3] = new pokerCards(13, 0);  // 5 of Spades
-        hand2[4] = new pokerCards(1, 0);  // 7 of Clubs
+        Card[] hand2 = new Card[5];
+        hand2[0] = new Card(10, 0);  // Ace of Clubs
+        hand2[1] = new Card(11, 0); // 10 of Clubs
+        hand2[2] = new Card(12, 0); // Queen of Hearts
+        hand2[3] = new Card(13, 0);  // 5 of Spades
+        hand2[4] = new Card(1, 0);  // 7 of Clubs
 
 
         
