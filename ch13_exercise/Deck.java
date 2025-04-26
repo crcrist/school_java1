@@ -104,6 +104,12 @@ public class Deck {
      * Sorts the cards (in place) using selection sort.
      */
     public void selectionSort() {
+      
+        for  (int i = 0; i < cards.length - 1; i++) {
+            int lowestIndex = indexLowest(i, cards.length-1);
+            
+            swapCards(i, lowestIndex);       
+        }
     }
 
     /**
@@ -111,7 +117,16 @@ public class Deck {
      * between low and high inclusive.
      */
     private int indexLowest(int low, int high) {
-        return 0;
+      int lowestIndex = low;
+      
+      for (int i = low + 1; i <= high; i++) {
+          int compareValue = cards[i].compareTo(cards[lowestIndex]);
+          if (compareValue == -1) {
+          lowestIndex = i;
+          }
+      }
+      
+      return lowestIndex;
     }
 
     /**
@@ -129,7 +144,40 @@ public class Deck {
      * Combines two previously sorted subdecks.
      */
     private static Deck merge(Deck d1, Deck d2) {
-        return null;
+        Deck result = new Deck(d1.getCards().length + d2.getCards().length);
+
+        int i = 0;
+        int j = 0;
+        int k = 0;
+
+        while (i < d1.getCards().length && j < d2.getCards().length) {
+            int lowestValue = d1.getCards()[i].compareTo(d2.getCards()[j]);
+            
+            if (lowestValue == -1) {
+                result.getCards()[k] = d1.getCards()[i];
+                i++;
+                k++;
+            }
+            else {
+                result.getCards()[k] = d2.getCards()[j];
+                k++;
+                j++;
+            }
+
+        }
+        while (i < d1.getCards().length) {
+            result.getCards()[k] = d1.getCards()[i];
+            i++;
+            k++;
+        }
+        
+        while (j < d2.getCards().length) {
+            result.getCards()[k] = d2.getCards()[j];
+            j++;
+            k++;
+        }
+
+        return result;
     }
 
     /**
@@ -171,6 +219,11 @@ public class Deck {
       //System.out.println(deck);
     
       deck.shuffle();
+     
+      //int lowestIndex = deck.indexLowest(1,20);
+      //System.out.println(lowestIndex + "\n" + deck);
+      System.out.println(deck);
+      deck.selectionSort();
       System.out.println(deck);
     }
 }
