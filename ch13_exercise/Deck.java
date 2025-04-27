@@ -184,26 +184,65 @@ public class Deck {
      * Returns a sorted copy of the deck using selection sort.
      */
     public Deck almostMergeSort() {
-        return this;
+        Deck deck1 = subdeck(0, 25);
+        Deck deck2 = subdeck(26, 51);
+        
+        deck1.selectionSort();
+        deck2.selectionSort();
+
+        Deck result = merge(deck1, deck2);
+        return result;
     }
 
     /**
      * Returns a sorted copy of the deck using merge sort.
      */
     public Deck mergeSort() {
-        return this;
+        if (this.cards.length <= 1) {
+            return this;
+        }
+
+        int mid = this.cards.length / 2;
+
+        Deck deck1 = this.subdeck(0, mid - 1);
+        Deck deck2 = this.subdeck(mid, this.cards.length - 1);
+        
+        deck1 = deck1.mergeSort();
+        deck2 = deck2.mergeSort();
+
+        return merge(deck1, deck2);
     }
 
     /**
      * Reorders the cards (in place) using insertion sort.
      */
     public void insertionSort() {
+        // start from the second card (index 1)
+        for (int i = 1; i < cards.length; i++) {
+            Card current = cards[i];
+            // insert the current card into its proper position
+            insert(current, i);
+        }
     }
 
     /**
      * Helper method for insertion sort.
      */
     private void insert(Card card, int i) {
+        // i is the position where the card should be inserted
+        // Start at position i and move the card backward until it's in the right position
+        int j = i;
+        // Keep moving backward as long as we haven't reached the beginning
+        // and the current card is less than the one before it
+        while (j > 0 && card.compareTo(cards[j-1]) == -1) {
+            // Shift the card at j-1 one position to the right
+            cards[j] = cards[j-1];
+            j--;
+        }
+        // Place the card in its correct position
+        cards[j] = card;
+      
+
     }
 
     
@@ -223,7 +262,13 @@ public class Deck {
       //int lowestIndex = deck.indexLowest(1,20);
       //System.out.println(lowestIndex + "\n" + deck);
       System.out.println(deck);
-      deck.selectionSort();
+      //deck.selectionSort();
+      //System.out.println(deck);
+        
+      //Deck sortedDeck = deck.almostMergeSort();
+      //System.out.println(sortedDeck);
+      deck.insertionSort();
       System.out.println(deck);
+
     }
 }
