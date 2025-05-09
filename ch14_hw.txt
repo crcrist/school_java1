@@ -1,0 +1,215 @@
+// Exercise 14.1
+public class SmartPlayer extends Player {
+    
+    public SmartPlayer(String name) {
+        super(name);
+    }
+    
+    @Override -- overriding the parent method
+    public Card play(Eights eights, Card prev) {
+        Card chosenCard = searchForSmartMatch(prev);
+        if (chosenCard == null) {
+            chosenCard = drawForMatch(eights, prev);
+        }
+        return chosenCard;
+    }
+    
+    private Card searchForSmartMatch(Card prev) {
+        Card bestCard = null;
+        int highestRank = -1;
+        Card eightCard = null;
+        
+        // Look through all cards
+        for (int i = 0; i < hand.size(); i++) {
+            Card card = hand.getCard(i);
+            if (cardMatches(card, prev)) {
+                // Save any 8s for last resort
+                if (card.getRank() == 8) {
+                    eightCard = card;
+                } else {
+                    // Among non-8 cards, play the highest rank
+                    if (card.getRank() > highestRank) {
+                        highestRank = card.getRank();
+                        bestCard = card;
+                    }
+                }
+            }
+        }
+        
+        // If we have a non-8 card to play, use it
+        if (bestCard != null) {
+            return hand.popCard(hand.indexOf(bestCard));
+        }
+        
+        // Otherwise, play an 8 if we have one
+        if (eightCard != null) {
+            return hand.popCard(hand.indexOf(eightCard));
+        }
+        
+        // No matching cards
+        return null;
+    }
+}
+
+// Exercise 14.2
+
+public class GameTester {
+    public static void main(String[] args) {
+        int player1Wins = 0;
+        int player2Wins = 0;
+        
+        for (int i = 0; i < 100; i++) {
+            // Create players - one regular, one smart
+            Player player1 = new Player("Regular Player");
+            Player player2 = new SmartPlayer("Smart Player");
+            
+            // Create and play game
+            Eights game = new Eights(player1, player2);
+            Player winner = game.playGame(); // Modified to return winner
+            
+            // Track wins
+            if (winner == player1) {
+                player1Wins++;
+            } else {
+                player2Wins++;
+            }
+        }
+        
+        System.out.println("Results after 100 games:");
+        System.out.println("Regular Player wins: " + player1Wins);
+        System.out.println("Smart Player wins: " + player2Wins);
+    }
+}
+
+// Exercise 14.3 
+
+public class Eights {
+    private ArrayList<Player> players;  // Replace one and two
+    private Hand drawPile;
+    private Hand discardPile;
+    private Scanner in;
+    private int currentPlayerIndex;  // Track current player
+    
+    // Modified constructor to handle variable number of players
+    public Eights(int numPlayers) {
+        players = new ArrayList<>();
+        for (int i = 0; i < numPlayers; i++) {
+            players.add(new Player("Player " + (i + 1)));
+        }
+        currentPlayerIndex = 0;
+        
+        // Initialize deck and deal cards (similar to original)
+        CardCollection deck = new Deck("Deck");
+        deck.shuffle();
+        
+        // Deal cards to all players
+        int handSize = 5;  // or whatever the original uses
+        for (Player player : players) {
+            deck.deal(player.getHand(), handSize);
+        }
+        
+        // Set up draw and discard piles
+        discardPile = new Hand("Discards");
+        drawPile = new Hand("Draw pile");
+        deck.dealAll(drawPile);
+        
+        // Start with one card in discard pile
+        Card first = drawPile.popCard();
+        discardPile.addCard(first);
+        
+        in = new Scanner(System.in);
+    }
+    
+    // Modified isDone to check all players
+    public boolean isDone() {
+        for (Player player : players) {
+            if (player.getHand().isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    // Modified nextPlayer to cycle through ArrayList
+    public Player nextPlayer(Player current) {
+        currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+        return players.get(currentPlayerIndex);
+    }
+    
+    // Modified displayState to show all players
+    public void displayState() {
+        for (Player player : players) {
+            player.display();
+        }
+        discardPile.display();
+        System.out.println("Draw pile:");
+        System.out.println(drawPile.size() + " cards");
+        in.nextLine();
+    }
+    
+    // Modified playGame to start with first player
+    public void playGame() {
+        Player player = players.get(0);  // Start with first player
+        
+        while (!isDone()) {
+            displayState();
+            takeTurn(player);
+            player = nextPlayer(player);
+        }
+        
+        // Display scores for all players
+        for (Player p : players) {
+            p.displayScore();
+        }
+    }
+    
+    // These methods remain the same
+    public void reshuffle() { /* ... */ }
+    public Card drawCard() { /* ... */ }
+    public void takeTurn(Player player) { /* ... */ }
+}
+// Exercise 14.4
+
+public class EightsCard extends Card {
+    public EightsCard(int rank, int suit) {
+        super(rank, suit);
+    }
+    
+    public boolean match(Card other) {
+        return this.getSuit() == other.getSuit() 
+            || this.getRank() == other.getRank()
+            || this.getRank() == 8;
+    }
+    
+    public int scoreCard() {
+        if (getRank() == 8) {
+            return 50;
+        } else if (getRank() > 10) {
+            return 10;
+        } else {
+            return getRank();
+        }
+    }
+}
+
+public class EightsHand extends Hand {
+    public int scoreHand() {
+        int total = 0;
+        for (int i = 0; i < size(); i++) {
+            EightsCard card = (EightsCard) getCard(i);
+            total += card.scoreCard();
+        }
+        return total;
+    }
+}
+
+[Card] <|-- [EightsCard]
+        └─ match(Card): boolean
+        └─ scoreCard(): int
+
+[CardCollection] <|-- [Hand] <|-- [EightsHand]
+                                └─ scoreHand(): int
+
+[Player] ──> [EightsHand]
+[Eights] ──> [Player]
+         ──> [EightsHand]
